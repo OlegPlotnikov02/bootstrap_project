@@ -1,0 +1,14 @@
+:root {
+      --color: #05b1b1;
+      --color: #52339a;}
+body {
+  transform: scale(1.085);
+  transform-origin: 0 0;
+}
+header, footer, section { padding: 250px 0;}
+header, footer, section{background-color:yellow;}
+
+
+.btn-secondary {
+  display:block;
+  margin: 10px;

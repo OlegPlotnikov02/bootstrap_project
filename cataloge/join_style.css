@@ -1,0 +1,8 @@
+body {
+  transform: scale(1);
+  transform-origin: 0 0;
+}
+
+header, footer, section { padding: 200px 0;}
+header, footer, section{background-color:yellow;}
+
