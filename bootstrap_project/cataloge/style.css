@@ -1,0 +1,51 @@
+.notification {
+  position: fixed;
+  bottom: 600px;
+  right: 20px;
+  background-color: yellow; /* Зеленый цвет для успешного сообщения */
+  color: black;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.notification.hide {
+  opacity: 0;
+  transform: translateY(100%);
+}
+:root {
+      --color: #05b1b1;
+      --color: #52339a;}
+
+header, footer, section { padding: 250px 0;}
+header, footer, section{background-color:green;}
+.form-control{ width: 250px;
+margin: 0 auto;
+               }
+.btn-itd {
+  display:block;
+  margin: 5px;
+  padding: 15px 200px;
+
+.btn-success {
+  width: auto; /* Вернуть стандартную ширину */
+  border-radius: auto; /* Вернуть скругленные углы */
+  padding: auto;}
+  /* Вернуть отступы */
+.form-control {
+    border-radius: 0.25rem; /* Стандартное значение Bootstrap */
+}
+
+
+  color: var(--bs-white);
+  background-color:var(--bs-blue);}
+  .btn-secondary {
+  display:block;
+  margin: 10px;

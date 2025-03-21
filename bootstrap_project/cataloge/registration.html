@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <title>Регистрация</title>
+  <style>
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+    .success-message {
+      color: green;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" style="display: flex; justify-content: center;">
+      <div class="row">
+        <div class="col-12">
+          <h1 data-t9n="Список дел" class="text-center text-black">Список дел</h1>
+          <form id="registrationForm">
+
+            <div class="mb-3">
+              <label data-t9n="Логин" for="InputLogin" class="form-label">Логин</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input data-t9n="Логин" type="text" class="form-control" id="InputLogin" placeholder="A*****" required>
+              </div>
+              <div id="loginError" class="error-message"></div>
+            </div>
+
+
+            <div class="mb-3">
+              <label data-t9n="Адрес почты" for="emailAdress" class="form-label">Адрес электронной почты</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-mailbox"></i></span>
+                <input data-t9n="Адрес почты" type="email" class="form-control" id="emailAdress" placeholder="*****@mail.ru" required>
+              </div>
+              <div id="emailError" class="error-message"></div>
+            </div>
+
+
+            <div class="mb-3">
+              <label data-t9n="Пароль" for="InputPassword" class="form-label">Пароль</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input data-t9n="Пароль" type="password" class="form-control" id="InputPassword" placeholder="Пароль 6 знаков" required>
+              </div>
+              <div id="passwordError" class="error-message"></div>
+            </div>
+
+
+            <div class="mb-3">
+              <label data-t9n="Пароль еще раз" for="againInputPassword" class="form-label">Пароль еще раз</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input data-t9n="Пароль еще раз" type="password" class="form-control" id="againInputPassword" placeholder="Повторите пароль" required>
+              </div>
+              <div id="confirmPasswordError" class="error-message"></div>
+            </div>
+
+
+            <button data-t9n="Зарегистрироваться" type="submit" class="btn btn-success" id="submitButton">
+              <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+              Зарегистрироваться
+            </button>
+
+
+            <a data-t9n="Выход" href="index.html" class="btn btn-danger">Выход</a>
+
+
+            <div id="language-switcher">
+              <button type="button" class="btn btn-outline-info" data-lang="en">English</button>
+              <button type="button" class="btn btn-outline-info" data-lang="ru">Русский</button>
+            </div>
+          </form>
+
+
+          <div id="successMessage" class="success-message"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    document.getElementById("registrationForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+
+      document.querySelectorAll(".error-message").forEach((el) => (el.textContent = ""));
+      document.getElementById("successMessage").textContent = "";
+
+
+      const login = document.getElementById("InputLogin").value;
+      const email = document.getElementById("emailAdress").value;
+      const password = document.getElementById("InputPassword").value;
+      const confirmPassword = document.getElementById("againInputPassword").value;
+
+
+      if (password.length < 6) {
+        document.getElementById("passwordError").textContent = "Пароль должен содержать не менее 6 символов";
+        return;
+      }
+
+
+      if (password !== confirmPassword) {
+        document.getElementById("confirmPasswordError").textContent = "Пароли не совпадают";
+        return;
+      }
+
+
+      document.getElementById("spinner").style.display = "inline-block";
+      document.getElementById("submitButton").disabled = true;
+
+
+      const requestData = {
+        action: "register",
+        params: {
+          login,
+          email,
+          password,
+        },
+      };
+
+      try {
+
+        const response = await fetch("https://example.com/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        const result = await response.json();
+
+
+        if (result.status === "ok") {
+
+          document.getElementById("successMessage").textContent = "Регистрация прошла успешно!";
+          console.log("Данные пользователя:", result.data);
+        } else {
+
+          if (result.field) {
+
+            document.getElementById(`${result.field}Error`).textContent = result.message;
+          } else {
+
+            alert(result.message);
+          }
+        }
+      } catch (error) {
+        console.error("Ошибка при отправке запроса:", error);
+        alert("Произошла ошибка при отправке запроса");
+      } finally {
+
+        document.getElementById("spinner").style.display = "none";
+        document.getElementById("submitButton").disabled = false;
+      }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
